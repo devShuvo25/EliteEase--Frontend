@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  /* This maps your custom properties to Tailwind utilities */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-muted: var(--brand-muted);
+  --color-ui-soft: var(--ui-soft);
+  
+  /* Use these as text-main or bg-main */
+  --color-main-bg: rgb(var(--bg-rgb));
+  --color-main-text: rgb(var(--text-rgb));
+}
+
+@layer base {
+  :root {
+    /* Brand */
+    --brand-primary: #061029;
+    --brand-accent: #fb791c;
+    --brand-muted: #e5e7eb;
+
+    /* RGB tokens for opacity support */
+    --bg-rgb: 248, 250, 252;
+    --text-rgb: 15, 23, 42;
+
+    /* UI */
+    --ui-soft: #f1f5f9;
+  }
+
+  .dark {
+    --brand-primary: #e5e7eb;
+    --brand-accent: #34d399;
+    --brand-muted: #334155;
+
+    --bg-rgb: 9, 11, 15;
+    --text-rgb: 226, 232, 240;
+    --ui-soft: #1e293b; /* Darker soft UI for dark mode */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  body {
+    background-color: rgb(var(--bg-rgb));
+    color: rgb(var(--text-rgb));
+    font-family: var(--font-body, system-ui, sans-serif);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-display, Georgia, serif);
+    line-height: 1.1;
+  }
+
+  /* Fixed: Removed global transition '*' to prevent performance lag */
+  body {
+    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  }
+}
