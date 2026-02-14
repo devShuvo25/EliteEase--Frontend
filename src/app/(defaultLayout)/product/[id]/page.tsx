@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Star,
@@ -34,10 +34,13 @@ import { useGetReviewsByProductIdQuery } from "@/redux/api/reviewsApis";
 import { useGetQuestionsByIdQuery } from "@/redux/api/questionsApis";
 import { useAddToCartMutation } from "@/redux/api/cartApi";
 import { Product } from "@/types/product";
+import { closeAlert, showAppAlert, showConfirmDialog, showLoadingAlert } from "@/utils/alert";
+import { useAddToWishlistMutation, useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/wishListApis";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const productId = Array.isArray(id) ? id[0] : id;
+  const router = useRouter()
 
   // --- Data Fetching ---
   const { data: productRes, isLoading } = useGetProductByIdQuery(
@@ -51,6 +54,11 @@ const ProductDetailsPage = () => {
   const { data: questionsRes } = useGetQuestionsByIdQuery(productId ?? "", {
     skip: !productId,
   });
+  const [addToWishlist, { isLoading : wishListLoading }] = useAddToWishlistMutation();
+  const {data: wishRes} = useGetWishlistQuery(undefined)
+  const [removeFromWishlist, { isLoading: isRemoving }] = useRemoveFromWishlistMutation();
+
+
 
   // API Mutations
   const [addToCart, { isLoading: isAdding }] = useAddToCartMutation();
@@ -58,6 +66,8 @@ const ProductDetailsPage = () => {
   const product = productRes?.data as Product || {};
   const reviews = reviewsRes?.data || [];
   const questions = questionsRes?.data || [];
+  const isExist = wishRes?.data?.products?.some(p => p.id === product?.id )
+  console.log(isExist)
 
   // --- State ---
 const [selectedImg, setSelectedImg] = useState<string | null>(null);
@@ -77,23 +87,72 @@ const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png"
     }
   };
 
-  const handleAddToCartAction = async () => {
-    if (!productId) return toast.error("Product not found");
-    if (!product?.stock || product.stock < 1) return toast.error("Out of stock");
+const handleAddToCartAction = async () => {
+  // 1. Basic validation
+  if (!productId) return toast.error("Product not found");
+  
+  if (!product?.stock || product.stock < 1) {
+    return showAppAlert("Sorry, Stock out", "Try another product", "warning");
+  }
 
+  // 2. Trigger Confirmation and WAIT for result
+  const result = await showConfirmDialog(
+    "Add to Cart?", 
+    `Do you want to add ${quantity} x ${product.name} to your cart?`
+  );
+
+  // 3. Proceed only if user confirmed
+  if (result.isConfirmed) {
     try {
+      // 4. Show the new Loading Alert
+      showLoadingAlert("Adding to Cart...", "Please wait a moment");
+
+      // Execute the API call
       await addToCart({ productId, quantity }).unwrap();
+
+      // 5. Success Flow
+      // Close the loading alert first
+      closeAlert(); 
+
       toast.success(`${product.name} added to cart!`, {
         description: `Quantity: ${quantity}`,
         action: {
           label: "View Cart",
-          onClick: () => console.log("Navigate to cart"),
+          onClick: () => {
+            router.push('/cart')
+          }, 
         },
       });
+
     } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to add to cart");
+      // 6. Error Flow
+      closeAlert(); // Ensure loading is closed before showing error
+      const errorMsg = error?.data?.message || "Failed to add to cart";
+      showAppAlert("Oops!", errorMsg, "error");
     }
-  };
+  }
+};
+const handleAddToWishlist = async (productId: string) => {
+  try {
+    // 1. Call the API
+    if(isExist){
+      return toast.warning("Already in wishlist")
+    }
+    const res = await addToWishlist(productId).unwrap();
+    
+    // 2. Alert the user with a professional toast
+    if (res.success) {
+      toast.success("Added to wishlist! ❤️");
+    }
+  } catch (error: any) {
+    // 3. Handle errors (e.g., product already exists or not logged in)
+    const errorMessage = error?.data?.message || "Failed to add to wishlist";
+    toast.error(errorMessage);
+    
+    // Fallback alert if you specifically want a browser popup for errors
+    // alert(errorMessage); 
+  }
+};
 
   if (isLoading)
     return (
@@ -229,7 +288,7 @@ const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png"
                 <Button
                   onClick={() => handleAddToCartAction()}
                   disabled={isAdding || stock < 1}
-                  className="bg-brand-primary hover:bg-brand-primary/90 text-white flex-1 h-12 text-xs font-bold uppercase tracking-widest shadow-md"
+                  className="cursor-pointer bg-brand-primary hover:bg-brand-primary/90 text-white flex-1 h-12 text-xs font-bold uppercase tracking-widest shadow-md"
                 >
                   {isAdding ? (
                     <Loader2 className="mr-2 animate-spin" size={18} />
@@ -239,10 +298,14 @@ const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png"
                   {isAdding ? "Adding..." : "Add to Cart"}
                 </Button>
 
-                <div className="flex gap-2">
+                <div onClick={() => handleAddToWishlist(product?.id)} className="flex gap-2">
                   <ActionIcon
-                    icon={<Heart size={20} />}
+                    
+                    icon={<Heart size={20}
+                    className={isExist ? "fill-rose-500 text-rose-500" : "text-gray-500"}
+                    />}
                     hoverClass="hover:text-rose-500 hover:border-rose-500 hover:bg-rose-50"
+                    
                   />
                   <ActionIcon
                     icon={<ArrowRightLeft size={20} />}

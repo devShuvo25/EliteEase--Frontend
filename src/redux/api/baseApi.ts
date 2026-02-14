@@ -38,9 +38,9 @@ const rawBaseQuery = fetchBaseQuery({
   ) {
     api.dispatch(logout());
     // Redirect to login page
-    if (typeof window !== "undefined") {
-      window.location.href = "/login";
-    }
+    // if (typeof window !== "undefined") {
+    //   window.location.href = "/login";
+    // }
   }
 
   return result;
@@ -49,6 +49,6 @@ const rawBaseQuery = fetchBaseQuery({
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithAuth,
-  tagTypes: ["Users","User","categories","permissions", "products", "answers","questions","reviews","cart"],
+  tagTypes: ["Users","User","categories","permissions", "products", "answers","questions","reviews","cart", "Wishlist"],
   endpoints: (builder) => ({}),
 });

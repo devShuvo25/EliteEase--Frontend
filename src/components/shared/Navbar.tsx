@@ -11,20 +11,39 @@ import Link from "next/link";
 import { useGetAllCartItemsQuery } from "@/redux/api/cartApi";
 
 import { useGetMeQuery } from "@/redux/api/authApi";
+import { useClearWishlistMutation, useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/wishListApis";
+import WishlistPageModal from "../modal/wishLists.modal";
 
 export default function Navbar() {
   const { data: res } = useGetAllCategoryQuery();
   const {data : userRes} = useGetMeQuery(undefined)
   const user = userRes?.data || {};
-  console.log(user, user?.name)
   const categories: ApiCategory[] = res?.data ?? [];
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const {data : cartRes} = useGetAllCartItemsQuery(undefined)
+  const {data : wishListRes} = useGetWishlistQuery(undefined)
   const cartCount = cartRes?.data?.items?.length || 0
+  const wishlist = wishListRes?.data || []
+  const wishListCount = wishlist?.products?.length || 0;
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+ const { data: wishRes } = useGetWishlistQuery(undefined);
+ const [removeFromWishlist, { isLoading: isRemoving }] = useRemoveFromWishlistMutation();
+ const [clearWishlist, { isLoading: isClearing }] = useClearWishlistMutation();
+
 
 
   return (
     <header className="fixed z-50 w-full  bg-white shadow-sm">
+      <WishlistPageModal
+      isOpen={isWishlistOpen}
+      setIsOpen={setIsWishlistOpen}
+      onClose={() => setIsWishlistOpen(false)}
+      products={wishRes?.data?.products || []}
+      onRemove={(id) => removeFromWishlist(id)}
+      onClear={() => clearWishlist()}
+      isRemoving={isRemoving}
+      isClearing={isClearing}
+    />
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-3 md:px-6">
         
@@ -66,7 +85,9 @@ export default function Navbar() {
             <Search className="h-5 w-5" />
           </button>
 
-          <IconBadge icon={<Heart className="h-5 w-5 md:h-6 md:w-6" />} count={2} />
+          <div onClick={() => setIsWishlistOpen(true)}>
+            <IconBadge  icon={<Heart className="h-5 w-5 md:h-6 md:w-6" />} count={wishListCount} />
+          </div>
           <Link href={"/cart"}>
           <IconBadge  icon={<ShoppingCart className="h-5 w-5 md:h-6 md:w-6" />} count={cartCount} />
           </Link>

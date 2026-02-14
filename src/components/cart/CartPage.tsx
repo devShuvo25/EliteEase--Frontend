@@ -10,8 +10,8 @@ import {
   useRemoveFromCartMutation,
   useClearCartMutation 
 } from "@/redux/api/cartApi";
-import { toast } from "sonner";
 import Link from "next/link";
+import { showAppAlert, showConfirmDialog, showLoadingAlert } from "@/utils/alert";
 
 export default function CartPage() {
   const { data: cartRes, isLoading } = useGetAllCartItemsQuery(undefined, {
@@ -26,15 +26,34 @@ export default function CartPage() {
     acc + (item.product.basePrice * item.quantity), 0
   );
 
+ // Adjust path as needed
+
 const handleClear = async () => {
-  try {
-    await clearCart(undefined).unwrap();
-    toast.success("Cart Cleared Successfully");
-  } catch (err: any) {
-    // Error
-    const msg = err?.data?.message || "Failed to clear cart";
-    toast.error(msg);
-    console.error("Clear Cart Error:", err);
+  // Step 1: Trigger the Common Confirmation Dialog
+  const result = await showConfirmDialog(
+    "Are you sure?",
+    "This will remove all items from your cart and restore product stock."
+  );
+
+  // Step 2: Proceed only if the user confirms
+  if (result.isConfirmed) {
+    try {
+      // Step 3: Show the Common Loading Spinner
+      showLoadingAlert("Processing...", "Cleaning up your shopping cart.");
+
+      // Execute the mutation (RTK Query)
+      await clearCart(undefined).unwrap();
+      // Step 4: Show the Common Success Alert
+      // We pass 'success' as the icon variable
+      await showAppAlert("Success!", "Your cart has been cleared.", "success");
+
+    } catch (err: any) {
+      // Step 5: Handle Errors using the Common Alert
+      const errorMessage = err?.data?.message || "Something went wrong while clearing the cart.";
+      
+      showAppAlert("Error!", errorMessage, "error");
+      console.error("Clear Cart Logic Error:", err);
+    }
   }
 };
 
