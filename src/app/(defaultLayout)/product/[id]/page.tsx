@@ -36,11 +36,14 @@ import { useAddToCartMutation } from "@/redux/api/cartApi";
 import { Product } from "@/types/product";
 import { closeAlert, showAppAlert, showConfirmDialog, showLoadingAlert } from "@/utils/alert";
 import { useAddToWishlistMutation, useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/wishListApis";
+import { useAuthCheck } from "@/hook/useAuthCheck";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const productId = Array.isArray(id) ? id[0] : id;
   const router = useRouter()
+  const {user,checkAccess} = useAuthCheck()
+  console.log("USer:", user,checkAccess)
 
   // --- Data Fetching ---
   const { data: productRes, isLoading } = useGetProductByIdQuery(
@@ -54,9 +57,8 @@ const ProductDetailsPage = () => {
   const { data: questionsRes } = useGetQuestionsByIdQuery(productId ?? "", {
     skip: !productId,
   });
-  const [addToWishlist, { isLoading : wishListLoading }] = useAddToWishlistMutation();
+  const [addToWishlist] = useAddToWishlistMutation();
   const {data: wishRes} = useGetWishlistQuery(undefined)
-  const [removeFromWishlist, { isLoading: isRemoving }] = useRemoveFromWishlistMutation();
 
 
 
@@ -67,13 +69,12 @@ const ProductDetailsPage = () => {
   const reviews = reviewsRes?.data || [];
   const questions = questionsRes?.data || [];
   const isExist = wishRes?.data?.products?.some(p => p.id === product?.id )
-  console.log(isExist)
 
   // --- State ---
-const [selectedImg, setSelectedImg] = useState<string | null>(null);
-const [quantity, setQuantity] = useState(1);
-const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png";
-  
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png";
+    
 
 
   // --- Handlers ---
@@ -88,6 +89,8 @@ const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png"
   };
 
 const handleAddToCartAction = async () => {
+  // check acces before hiting
+  if(!checkAccess(['CUSTOMER','SUPER_ADMIN','STAFF','ADMIN'])) return
   // 1. Basic validation
   if (!productId) return toast.error("Product not found");
   

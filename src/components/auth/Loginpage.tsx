@@ -11,11 +11,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/features/authSlice";
-import { useMyProfileQuery } from "@/redux/api/userApi";
 import { Loader2, Laptop } from "lucide-react";
 import MyFormInput from "../form/MyFormInput";
 import MyFormWrapper from "../form/MyFormWrapper";
+import { setCredentials } from "@/redux/features/authSlice";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -29,7 +28,6 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { refetch } = useMyProfileQuery(undefined, { skip: true });
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -39,7 +37,7 @@ export default function LoginPage() {
         console.log("succes");
         const token = response?.data?.accessToken;
         Cookies.set("token", token, { expires: 7 });
-        dispatch(setUser({ token }));
+        dispatch(setCredentials({ token }));
         toast.success(`Welcome back!`);
         router.push("/")
 

@@ -10,6 +10,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    
+    logOut: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+      invalidatesTags: ["User"],
+    }),
        upload: builder.mutation({
       query: (credentials) => ({
         url: "/file/upload",
@@ -90,6 +98,7 @@ export const authApi = baseApi.injectEndpoints({
 
 export const {
   useLoginMutation,
+  useLogOutMutation,
   useUploadMutation,
   useRegisterMutation,
   useSocialAuthMutation,

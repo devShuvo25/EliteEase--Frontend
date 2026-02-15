@@ -13,6 +13,7 @@ import { useGetAllCartItemsQuery } from "@/redux/api/cartApi";
 import { useGetMeQuery } from "@/redux/api/authApi";
 import { useClearWishlistMutation, useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/wishListApis";
 import WishlistPageModal from "../modal/wishLists.modal";
+import { UserNav } from "../dropdown/user.dropdown";
 
 export default function Navbar() {
   const { data: res } = useGetAllCategoryQuery();
@@ -92,10 +93,13 @@ export default function Navbar() {
           <IconBadge  icon={<ShoppingCart className="h-5 w-5 md:h-6 md:w-6" />} count={cartCount} />
           </Link>
 
+
           <div className="flex items-center gap-2 cursor-pointer hover:text-brand-accent transition-colors">
             <User className="h-5 w-5 md:h-6 md:w-6" />
             <span className="text-sm font-bold hidden lg:block whitespace-nowrap">{user?.username || "Bot"}</span>
           </div>
+          {/* Your New Dropdown */}
+           <UserNav />
         </div>
       </div>
 
