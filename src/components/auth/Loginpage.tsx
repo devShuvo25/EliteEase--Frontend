@@ -37,9 +37,14 @@ export default function LoginPage() {
         console.log("succes");
         const token = response?.data?.accessToken;
         Cookies.set("token", token, { expires: 7 });
-        dispatch(setCredentials({ token }));
+       dispatch(setCredentials({ 
+          token: token, 
+          user: response?.data?.user // Ensure the user object has the 'role' property
+       }));
+       console.log("user",response)
         toast.success(`Welcome back!`);
-        router.push("/")
+        router.push("/cart")
+        console.log(`Welcome back!`);
 
       }
     } catch (error: any) {

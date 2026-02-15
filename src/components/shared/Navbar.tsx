@@ -77,7 +77,7 @@ export default function Navbar() {
         </div>
 
         {/* 3. Right Actions */}
-        <div className="flex items-center gap-3 md:gap-6">
+        <div className="flex items-center gap-3 md:gap-8">
           {/* Mobile Search Toggle */}
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -94,10 +94,6 @@ export default function Navbar() {
           </Link>
 
 
-          <div className="flex items-center gap-2 cursor-pointer hover:text-brand-accent transition-colors">
-            <User className="h-5 w-5 md:h-6 md:w-6" />
-            <span className="text-sm font-bold hidden lg:block whitespace-nowrap">{user?.username || "Bot"}</span>
-          </div>
           {/* Your New Dropdown */}
            <UserNav />
         </div>

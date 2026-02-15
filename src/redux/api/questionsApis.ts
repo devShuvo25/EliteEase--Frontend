@@ -15,10 +15,10 @@ export const questionsApi = baseApi.injectEndpoints({
     }),
     // create questions
     createQuestions: builder.mutation({
-      query: ({ data }) => ({
+      query: (data ) => ({
         url: "/questions",
         method: "POST",
-        body: data, // { name, description }
+        body: data, // { content, userid }
       }),
       invalidatesTags: ["questions"],
     }),
@@ -33,7 +33,7 @@ export const questionsApi = baseApi.injectEndpoints({
     }),
 
     updateQuestions: builder.mutation({
-      query: ({ data }) => ({
+      query: ( data ) => ({
         url: `/questions/${data.id}`,
         method: "PATCH", // or "PUT" depending on your backend
         body: data, // { id, name, description }
@@ -42,8 +42,8 @@ export const questionsApi = baseApi.injectEndpoints({
     }),
 
     deleteQuestions: builder.mutation({
-      query: ({ data }) => ({
-        url: `/questions/${data.id}`,
+      query: ({ id }) => ({
+        url: `/questions/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["questions"],
@@ -53,6 +53,7 @@ export const questionsApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllquestionsQuery,
+  useCreateQuestionsMutation,
   useGetQuestionsByIdQuery,
   useUpdateQuestionsMutation,
   useDeleteQuestionsMutation,

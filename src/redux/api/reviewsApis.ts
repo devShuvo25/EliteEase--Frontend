@@ -17,7 +17,7 @@ export const reviewsApi = baseApi.injectEndpoints({
     }),
 
     createReviews: builder.mutation({
-      query: ({ data }) => ({
+      query: (data) => ({
         url: "/reviews",
         method: "POST",
         body: data, // { name, description }
@@ -26,8 +26,8 @@ export const reviewsApi = baseApi.injectEndpoints({
     }),
 
     updateReviews: builder.mutation({
-      query: ({ data }) => ({
-        url: `/reviews/${data.id}`,
+      query: ( data ) => ({
+        url: `/reviews/${data?.id}`,
         method: "PATCH", // or "PUT" depending on your backend
         body: data, // { id, name, description }
       }),
