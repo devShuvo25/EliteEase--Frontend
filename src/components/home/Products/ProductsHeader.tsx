@@ -1,18 +1,21 @@
+import { Dispatch } from '@reduxjs/toolkit';
+import {  ChevronDown } from 'lucide-react';
+
 import React from 'react';
-import { MoveRight, ChevronDown } from 'lucide-react';
+
 
 interface ProductsHeaderProps {
   itemCount: number;
-  onPriceChange?: (range: string) => void;
-  onBrandChange?: (brand: string) => void; // Added brand prop
+  // Add '| undefined' here to match your parent state
+  setPrice: Dispatch<SetStateAction<string | undefined>>;
+  setBrand: Dispatch<SetStateAction<string | undefined>>;
   onViewAll?: () => void;
 }
 
 export const ProductsHeader = ({ 
   itemCount = 0, 
-  onPriceChange, 
-  onBrandChange,
-  onViewAll 
+  setBrand,
+  setPrice 
 }: ProductsHeaderProps) => {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-6 border-b border-gray-100 pb-8">
@@ -32,7 +35,7 @@ export const ProductsHeader = ({
         {/* Brand Filter */}
         <div className="relative min-w-40">
           <select 
-            onChange={(e) => onBrandChange?.(e.target.value)}
+            onChange={(e) => setBrand?.(e.target.value)}
             className="w-full appearance-none bg-ui-soft border border-gray-200 px-4 py-2.5 pr-10 text-xs font-semibold uppercase tracking-wider text-brand-primary focus:outline-none focus:border-brand-accent transition-colors cursor-pointer"
           >
             <option value="">All Brands</option>
@@ -49,7 +52,7 @@ export const ProductsHeader = ({
         {/* Price Range Filter */}
         <div className="relative min-w-40">
           <select 
-            onChange={(e) => onPriceChange?.(e.target.value)}
+            onChange={(e) => setPrice?.(e.target.value)}
             className="w-full appearance-none bg-ui-soft border border-gray-200 px-4 py-2.5 pr-10 text-xs font-semibold uppercase tracking-wider text-brand-primary focus:outline-none focus:border-brand-accent transition-colors cursor-pointer"
           >
             <option value="">Price Range</option>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SearchState {
   searchTerm: string;
-  categoryId: string | null; // Added categoryId
+  categoryId: string | null;
   isSearching: boolean;
 }
 
@@ -16,18 +16,18 @@ const filterSlice = createSlice({
   name: "filter",
   initialState,
   reducers: {
-    // Updates the text and checks if searching is active
+    // ...existing code...
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
-      // isSearching is true if there's text OR a category selected
-      state.isSearching = action.payload.length > 0 || state.categoryId !== null;
+      state.isSearching =
+        action.payload.length > 0 || state.categoryId !== null;
     },
-    
+
     // Updates the categoryId
     setCategoryId: (state, action: PayloadAction<string | null>) => {
       state.categoryId = action.payload;
-      // isSearching is true if there's text OR a category selected
-      state.isSearching = state.searchTerm.length > 0 || action.payload !== null;
+      state.isSearching =
+        state.searchTerm.length > 0 || action.payload !== null;
     },
 
     setIsSearching: (state, action: PayloadAction<boolean>) => {
@@ -43,5 +43,6 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setSearchTerm, setCategoryId, setIsSearching, resetSearch } = filterSlice.actions;
+export const { setSearchTerm, setCategoryId, setIsSearching, resetSearch } =
+  filterSlice.actions;
 export default filterSlice.reducer;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ProductCard from "../productCard/Product.Card";
 import { MoveRight } from "lucide-react";
 import { useGetAllProductsQuery } from "@/redux/api/productsApis";
@@ -7,9 +7,14 @@ import { useAppSelector } from "@/redux/hooks";
 
 const Products = () => {
   const { searchTerm , categoryId} = useAppSelector((state) => state.search);
+  const [brand,setBrand] = useState<string | undefined>(undefined)
+  const [price,setPrice] = useState<string | undefined>(undefined)
+  console.log(price,brand)
   const { data: res, isLoading } = useGetAllProductsQuery({
     searchTerm,
-    categoryId
+    categoryId,
+    brand,
+    price
   });
   const products = res?.data || [];
 
@@ -18,7 +23,7 @@ const Products = () => {
   return (
     <div id="products" className="container mx-auto px-4 py-12">
       {/* Header with Price Filter & Item Count */}
-      <ProductsHeader itemCount={products?.length} />
+      <ProductsHeader setBrand={setBrand} setPrice={setPrice} itemCount={products?.length} />
 
       {/* Product Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-6">
