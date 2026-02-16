@@ -6,10 +6,13 @@ import { ProductsHeader } from "./ProductsHeader";
 import { useAppSelector } from "@/redux/hooks";
 
 const Products = () => {
-  const { data: res, isLoading } = useGetAllProductsQuery();
+  const { searchTerm , categoryId} = useAppSelector((state) => state.search);
+  const { data: res, isLoading } = useGetAllProductsQuery({
+    searchTerm,
+    categoryId
+  });
   const products = res?.data || [];
-  const { searchTerm } = useAppSelector((state) => state.search);
-  console.log(searchTerm)
+
   if (isLoading) return <div className="text-center py-20 text-brand-primary">Loading Collection...</div>;
 
   return (

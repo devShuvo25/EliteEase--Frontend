@@ -1,3 +1,5 @@
+import { setCategoryId } from "@/redux/features/searchSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import Link from "next/link";
 
 interface SubCategory {
@@ -9,10 +11,12 @@ interface SubCategoryListProps {
   childrenCategories?: SubCategory[];
 }
 
-export const SubCategoryList = ({ childrenCategories }: SubCategoryListProps) => {
+export const SubCategoryList = ({
+  childrenCategories,
+}: SubCategoryListProps) => {
   // Check if there are actually children to display
   const hasChildren = childrenCategories && childrenCategories.length > 0;
-
+  const dispatch = useAppDispatch();
 
   return (
     <ul className="grid grid-cols-4 gap-y-1 ">
@@ -20,11 +24,10 @@ export const SubCategoryList = ({ childrenCategories }: SubCategoryListProps) =>
         childrenCategories.map((sub) => (
           <li
             key={sub?.id}
-            className="text-sm text-brand-primary  hover:translate-x-1 transition-all duration-200"
+            onClick={() => dispatch(setCategoryId(sub?.id))}
+            className="cursor-pointer text-sm text-brand-primary  hover:translate-x-1 transition-all duration-200"
           >
-            <Link href={`/category/${sub?.id}`}>
-              {sub?.name}
-            </Link>
+            {sub?.name}
           </li>
         ))
       ) : (

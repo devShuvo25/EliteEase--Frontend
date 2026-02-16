@@ -1,12 +1,21 @@
 // redux/api/categoryApi.ts
 import { baseApi } from "@/redux/api/baseApi";
-import { Product } from "@/types/product";
+
 
 export const productsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllProducts: builder.query<{ data: Product[] }, void>({
-      query: () => "/products",
+    getAllProducts: builder.query({
+      query: ({searchTerm, categoryId})=>({
+        url : '/products',
+        method : 'GET',
+        params : {
+          searchTerm,
+          categoryId
+        }
+    
+      }),
       providesTags: ["products"],
+      
     }),
     
     getProductById: builder.query({

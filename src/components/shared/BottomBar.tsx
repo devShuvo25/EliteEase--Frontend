@@ -3,13 +3,15 @@ import React from "react";
 import Link from "next/link";
 import { SubCategoryList } from "../dropdown/categoriesDropdown";
 import { ChevronDown, LayoutGrid } from "lucide-react";
+import { useAppDispatch } from "@/redux/hooks";
+import { setCategoryId } from "@/redux/features/searchSlice";
 
 interface CategoryWithChildren {
   id: string;
   name: string;
   children?: {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
   }[];
 }
 
@@ -18,6 +20,8 @@ interface MegaMenuProps {
 }
 
 export const BottomBar = ({ categories }: MegaMenuProps) => {
+  const dispatch = useAppDispatch();
+
   return (
     // Removed "hidden" classes to ensure it shows everywhere
     <nav className="relative bg-blue-50 border-b border-blue-100 w-full">
@@ -34,7 +38,8 @@ export const BottomBar = ({ categories }: MegaMenuProps) => {
         */}
         <ul className="flex items-center w-full overflow-x-auto scrollbar-hide px-2 md:px-6 gap-4 md:justify-between list-none">
           {categories?.map((c) => (
-            <li
+            <li 
+              onClick={() => dispatch(setCategoryId(c?.id))}
               key={c.id}
               className="group static shrink-0 md:shrink py-1" 
             >
