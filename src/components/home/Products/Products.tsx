@@ -3,11 +3,13 @@ import ProductCard from "../productCard/Product.Card";
 import { MoveRight } from "lucide-react";
 import { useGetAllProductsQuery } from "@/redux/api/productsApis";
 import { ProductsHeader } from "./ProductsHeader";
+import { useAppSelector } from "@/redux/hooks";
 
 const Products = () => {
   const { data: res, isLoading } = useGetAllProductsQuery();
   const products = res?.data || [];
-
+  const { searchTerm } = useAppSelector((state) => state.search);
+  console.log(searchTerm)
   if (isLoading) return <div className="text-center py-20 text-brand-primary">Loading Collection...</div>;
 
   return (

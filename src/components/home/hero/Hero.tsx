@@ -1,20 +1,26 @@
+"use client"; // Ensure this is present for useAppSelector
 import React from 'react';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Cpu, Zap } from "lucide-react";
+import { useAppSelector } from "@/redux/hooks"; // Import your hook
 
 const TechBanner = () => {
-  // Direct links to high-end, valid electronics imagery
-  const laptopImg = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000&auto=format&fit=crop"; // Silver Laptop
-  const audioImg = "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000&auto=format&fit=crop"; // Premium Headphones
+  // 1. Grab the isSearching state from Redux
+  const { isSearching } = useAppSelector((state) => state.search);
+
+  // 2. If searching, hide the entire component
+  if (isSearching) return null;
+
+  const laptopImg = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000&auto=format&fit=crop"; 
+  const audioImg = "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000&auto=format&fit=crop"; 
 
   return (
-    <section className="container mt-30 mx-auto px-4 py-2 grid grid-cols-1 lg:grid-cols-4 gap-4 font-body">
+    <section className="container mt-30 mx-auto px-4 py-2 grid grid-cols-1 lg:grid-cols-4 gap-4 font-body animate-in fade-in duration-500"> 
       
       {/* Main Hero Section - Editorial Tech Look */}
       <div className="relative lg:col-span-3 bg-white dark:bg-[#0a0a0c] border border-ui-border overflow-hidden flex flex-col md:flex-row items-center px-10 md:px-16 py-8 md:py-10 shadow-premium group/main">
         
-        {/* Subtle Luxury Gradient */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-linear-to-l from-slate-50 to-transparent dark:from-white/5 dark:to-transparent pointer-events-none" />
         
         <div className="z-10 flex-1 space-y-5 text-center md:text-left">
@@ -38,7 +44,6 @@ const TechBanner = () => {
             </Button>
           </div>
           
-          {/* Architectural Progress Bar */}
           <div className="flex justify-center md:justify-start items-center gap-4 mt-8">
             <span className="text-[10px] font-bold tracking-tighter text-brand-primary">01</span>
             <div className="w-20 h-0.5 bg-brand-muted relative">
@@ -48,7 +53,6 @@ const TechBanner = () => {
           </div>
         </div>
 
-        {/* High-End Floating Image */}
         <div className="relative flex-1 h-62.5 md:h-87.5 w-full mt-8 md:mt-0 perspective-1000">
           <div className="relative w-full h-full transition-all duration-1000 group-hover/main:rotate-y-12 group-hover/main:-translate-y-4">
             <Image
@@ -63,10 +67,8 @@ const TechBanner = () => {
         </div>
       </div>
 
-      {/* Sidebar Promo - The "Obsidian" Edition */}
+      {/* Sidebar Promo */}
       <div className="relative lg:col-span-1 bg-brand-primary overflow-hidden flex flex-col p-8 border border-brand-primary group/side">
-        
-        {/* Soft Gold Glow */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-accent/20 blur-[80px] rounded-full" />
 
         <div className="z-10 space-y-4">
@@ -99,12 +101,10 @@ const TechBanner = () => {
           />
         </div>
         
-        {/* Subtle Background Mark */}
         <div className="absolute bottom-4 left-8 text-white/5 font-display text-5xl font-black pointer-events-none tracking-tighter select-none">
           2026
         </div>
       </div>
-
     </section>
   );
 };

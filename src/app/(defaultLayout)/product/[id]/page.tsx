@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -83,10 +83,15 @@ const ProductDetailsPage = () => {
   // --- Local UI State ---
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [price,setPrice] = useState(product?.currentPrice)
   const [question, setQuestion] = useState<string>("");
 
   const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png";
   const stock = product?.stock || 0;
+// --- Derived State ---
+
+const currentUnitPrice = product?.basePrice || 0; 
+const totalPrice = currentUnitPrice * quantity;
 
   // --- Handlers ---
   const handleQuantity = (type: "inc" | "dec") => {
@@ -184,7 +189,7 @@ const ProductDetailsPage = () => {
 
       if (editingId) {
         const data = {
-          editingId,
+          id: editingId,
           rating,
           comment
         }
@@ -196,8 +201,8 @@ const ProductDetailsPage = () => {
           rating : rating,
           comment : comment
         }
-        console.log(data)
-        await createReview({data}).unwrap();
+        // console.log(data)
+        await createReview(data).unwrap();
         toast.success("Review submitted!");
       }
       closeAlert();
@@ -224,7 +229,7 @@ const ProductDetailsPage = () => {
   return (
     <div className="bg-[#f2f4f8] min-h-screen pt-24 pb-12 font-sans">
       <div className="container mx-auto px-4 max-w-7xl">
-        <Breadcrumbs brand={product.brand} />
+        <Breadcrumbs brand={product.brand || ''} />
 
         <div className="bg-white rounded shadow-sm p-6 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -271,7 +276,7 @@ const ProductDetailsPage = () => {
 
               <div className="flex flex-col md:flex-row gap-4 mb-8">
                 <PriceCard label="Regular Price" price={Number(product.compareAtPrice)} variant="muted" />
-                <PriceCard label="Special Price" price={Number(product.basePrice)} variant="accent" />
+                <PriceCard label="Special Price" price={Number(totalPrice)} variant="accent" />
               </div>
 
               <div className="flex flex-wrap items-center gap-4 border-t pt-8">
@@ -280,7 +285,7 @@ const ProductDetailsPage = () => {
                   <span className="w-12 text-center font-bold">{quantity}</span>
                   <QtyBtn label="+" onClick={() => handleQuantity("inc")} disabled={quantity >= stock || isAdding} />
                 </div>
-                <Button onClick={handleAddToCartAction} disabled={isAdding || stock < 1} className="bg-brand-primary h-12 flex-1 font-bold uppercase tracking-widest">
+                <Button onClick={handleAddToCartAction} disabled={isAdding || stock < 1} className="bg-brand-primary text-white h-12 flex-1 font-bold uppercase tracking-widest">
                   {isAdding ? <Loader2 className="animate-spin mr-2" size={18} /> : <ShoppingCart className="mr-2" size={18} />}
                   Add to Cart
                 </Button>

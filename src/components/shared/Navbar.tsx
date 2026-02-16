@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, User, ShoppingCart, Heart} from "lucide-react";
+import { Search,  ShoppingCart, Heart} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useGetAllCategoryQuery } from "@/redux/api/categoryApi";
@@ -10,15 +10,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useGetAllCartItemsQuery } from "@/redux/api/cartApi";
 
-import { useGetMeQuery } from "@/redux/api/authApi";
 import { useClearWishlistMutation, useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/wishListApis";
 import WishlistPageModal from "../modal/wishLists.modal";
 import { UserNav } from "../dropdown/user.dropdown";
+import { useDispatch} from "react-redux";
+import { setIsSearching, setSearchTerm } from "@/redux/features/searchSlice";
 
 export default function Navbar() {
   const { data: res } = useGetAllCategoryQuery();
-  const {data : userRes} = useGetMeQuery(undefined)
-  const user = userRes?.data || {};
   const categories: ApiCategory[] = res?.data ?? [];
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const {data : cartRes} = useGetAllCartItemsQuery(undefined)
@@ -27,11 +26,17 @@ export default function Navbar() {
   const wishlist = wishListRes?.data || []
   const wishListCount = wishlist?.products?.length || 0;
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
- const { data: wishRes } = useGetWishlistQuery(undefined);
- const [removeFromWishlist, { isLoading: isRemoving }] = useRemoveFromWishlistMutation();
- const [clearWishlist, { isLoading: isClearing }] = useClearWishlistMutation();
+  const { data: wishRes } = useGetWishlistQuery(undefined);
+  const [removeFromWishlist, { isLoading: isRemoving }] = useRemoveFromWishlistMutation();
+  const [clearWishlist, { isLoading: isClearing }] = useClearWishlistMutation();
+    // handle  searching this.state
+  const dispatch = useDispatch();
 
-
+  const handleSearch = (value : string) => {
+    console.log("from nav", value)
+    dispatch(setIsSearching(true))
+    dispatch(setSearchTerm(value))
+  }
 
   return (
     <header className="fixed z-50 w-full  bg-white shadow-sm">
@@ -64,7 +69,8 @@ export default function Navbar() {
 
         {/* 2. Desktop Search (Hidden on Mobile) */}
         <div className="relative hidden md:flex w-full max-w-md lg:max-w-xl items-center mx-4">
-          <Input
+          <Input 
+            onChange={(e) =>handleSearch(e.target.value)}
             placeholder="Search your product..."
             className="py-0.5 focus-visible:ring-1 focus-visible:ring-brand-primary/30 focus-visible:border-brand-primary border-gray-200 transition-all shadow-none pr-24"
           />

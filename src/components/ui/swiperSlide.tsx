@@ -10,8 +10,14 @@ import { ArrowRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function SwiperSlider() {
+    // 1. Grab the isSearching state from Redux
+const { isSearching } = useAppSelector((state) => state.search);
+  
+    // 2. If searching, hide the entire component
+if (isSearching) return null;
   return (
     <div className="container mx-auto px-4 py-12">
       <Swiper
