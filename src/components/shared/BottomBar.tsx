@@ -13,6 +13,11 @@ interface CategoryWithChildren {
   id: string;
   name: string;
   }[];
+  parentId? : string
+  parent?: {
+    id : string
+    name : string
+  }
 }
 
 interface MegaMenuProps {
@@ -21,6 +26,8 @@ interface MegaMenuProps {
 
 export const BottomBar = ({ categories }: MegaMenuProps) => {
   const dispatch = useAppDispatch();
+  // const filteredCategories = categories.filter(c=> !c?.parentId)
+  console.log(categories)
 
   return (
     // Removed "hidden" classes to ensure it shows everywhere

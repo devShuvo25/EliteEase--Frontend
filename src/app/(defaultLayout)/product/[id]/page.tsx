@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -83,13 +83,12 @@ const ProductDetailsPage = () => {
   // --- Local UI State ---
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [price,setPrice] = useState(product?.currentPrice)
   const [question, setQuestion] = useState<string>("");
 
   const mainImage = selectedImg || product?.images?.[0]?.url || "/placeholder.png";
   const stock = product?.stock || 0;
 // --- Derived State ---
-
+console.log("product:",product)
 const currentUnitPrice = product?.basePrice || 0; 
 const totalPrice = currentUnitPrice * quantity;
 

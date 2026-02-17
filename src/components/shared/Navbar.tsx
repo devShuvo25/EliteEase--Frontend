@@ -19,6 +19,7 @@ import { setIsSearching, setSearchTerm } from "@/redux/features/searchSlice";
 export default function Navbar() {
   const { data: res } = useGetAllCategoryQuery();
   const categories: ApiCategory[] = res?.data ?? [];
+  console.log("categories", categories)
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const {data : cartRes} = useGetAllCartItemsQuery(undefined)
   const {data : wishListRes} = useGetWishlistQuery(undefined)
