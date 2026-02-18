@@ -4,14 +4,23 @@ import { baseApi } from "@/redux/api/baseApi";
 export const productsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllProducts: builder.query({
-      query: ({ searchTerm, categoryId, brand,price }) => ({
+      query: ({
+          searchTerm,
+          categoryId,
+          brand,
+          price,
+          limit,
+          page
+        }) => ({
         url: "/products",
         method: "GET",
         params: {
           searchTerm,
           categoryId,
           brand,
-          price
+          price,
+          page,
+          limit
         },
       }),
       providesTags: ["products"],

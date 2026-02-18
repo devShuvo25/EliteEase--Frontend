@@ -78,7 +78,7 @@ const ProductDetailsPage = () => {
   const product = (productRes?.data as Product) || {};
   const reviews = reviewsRes?.data || [];
   const questions = questionsRes?.data || [];
-  const isExistInWishlist = wishRes?.data?.products?.some((p) => p.id === product?.id);
+  const isExistInWishlist = wishRes?.data?.products?.some((p :Product) => p.id === product?.id);
 
   // --- Local UI State ---
   const [selectedImg, setSelectedImg] = useState<string | null>(null);

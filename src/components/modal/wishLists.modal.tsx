@@ -65,14 +65,14 @@ const WishlistPageModal = ({
             products?.map((product) => (
               <div 
                 key={product.id}
-                onClick={() => handleViewDetails(product?.id)} 
+                onClick={() => handleViewDetails(product?.id as string)} 
                 className="group cursor-pointer bg-white border border-slate-100 rounded-xl p-4 flex gap-4 items-center shadow-sm hover:shadow-md transition-all duration-200"
               >
                 {/* Product Image */}
                 <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-slate-50 shrink-0 border border-slate-50">
                   <Image
                     src={product.images?.[0]?.url || "/placeholder.png"}
-                    alt={product.name}
+                    alt={product?.name as string}
                     fill
                     className="object-contain p-2"
                   />
@@ -92,7 +92,7 @@ const WishlistPageModal = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // Prevents parent div onClick
-                      handleViewDetails(product.id);
+                      handleViewDetails(product?.id as string) ;
                     }}
                     className="p-2.5 text-slate-400 hover:text-brand-primary hover:bg-blue-50 rounded-lg transition-all"
                     title="View Product"
@@ -105,7 +105,7 @@ const WishlistPageModal = ({
                     disabled={isRemoving}
                     onClick={(e) => {
                       e.stopPropagation(); // Prevents navigating to details page
-                      onRemove(product.id);
+                      onRemove(product?.id as string);
                     }}
                     className="p-2.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all disabled:opacity-50"
                     title="Remove Item"

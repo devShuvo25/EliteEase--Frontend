@@ -1,108 +1,95 @@
-"use client"; // Ensure this is present for useAppSelector
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Cpu, Zap } from "lucide-react";
-import { useAppSelector } from "@/redux/hooks"; // Import your hook
+import { useAppSelector } from "@/redux/hooks";
 
+/**
+ * TechBanner Component - Low Height Version
+ * Optimized for minimal vertical space while retaining premium branding.
+ */
 const TechBanner = () => {
-  // 1. Grab the isSearching state from Redux
   const { isSearching } = useAppSelector((state) => state.search);
 
-  // 2. If searching, hide the entire component
   if (isSearching) return null;
 
   const laptopImg = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000&auto=format&fit=crop"; 
   const audioImg = "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000&auto=format&fit=crop"; 
 
   return (
-    <section className="container mt-30 mx-auto px-4 py-2 grid grid-cols-1 lg:grid-cols-4 gap-4 font-body animate-in fade-in duration-500"> 
+    <section className="container mx-auto px-4 py-2 grid grid-cols-1 lg:grid-cols-4 gap-3 font-body animate-in fade-in duration-500"> 
       
-      {/* Main Hero Section - Editorial Tech Look */}
-      <div className="relative lg:col-span-3 bg-white dark:bg-[#0a0a0c] border border-ui-border overflow-hidden flex flex-col md:flex-row items-center px-10 md:px-16 py-8 md:py-10 shadow-premium group/main">
+      {/* Main Hero - Compact Workstation */}
+      <div className="relative lg:col-span-3 bg-white dark:bg-[#0a0a0c] border border-ui-border overflow-hidden flex flex-col md:flex-row items-center px-8 md:px-12 py-6 shadow-sm group/main rounded-xl">
         
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-linear-to-l from-slate-50 to-transparent dark:from-white/5 dark:to-transparent pointer-events-none" />
-        
-        <div className="z-10 flex-1 space-y-5 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-primary/5 border border-brand-primary/10 text-brand-primary dark:text-brand-accent font-bold tracking-[0.3em] text-[9px] uppercase">
-            <Cpu size={12} className="animate-pulse" />
-            <span>Silicon Architecture 2026</span>
+        <div className="z-10 flex-1 space-y-3 text-center md:text-left">
+          <div className="inline-flex items-center gap-2 px-2 py-0.5 bg-brand-primary/5 border border-brand-primary/10 text-brand-primary font-bold tracking-[0.2em] text-[8px] uppercase">
+            <Cpu size={10} />
+            <span>Silicon 2026</span>
           </div>
           
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-brand-primary dark:text-white leading-[1.05] tracking-tight">
-            Mastery in <br /> 
-            <span className="text-brand-accent italic font-medium">Engineering.</span>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-gray-900 dark:text-white leading-tight tracking-tight">
+            Mastery in <span className="text-brand-accent italic font-medium">Engineering.</span>
           </h1>
           
-          <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto md:mx-0 font-light">
-            The new M4 workstation. Performance redefined for those who demand absolute precision.
+          <p className="text-gray-500 text-[12px] leading-snug max-w-xs mx-auto md:mx-0">
+            The M4 workstation. Precision performance redefined.
           </p>
 
-          <div className="pt-2">
-            <Button className="btn-primary px-10 group/btn transition-all duration-500">
-              Configure <ArrowRight className="ml-3 h-3 w-3 transition-transform group-hover/btn:translate-x-2" />
+          <div className="pt-1">
+            <Button size="sm" className="bg-brand-primary hover:bg-brand-primary/90 text-white rounded-none px-6 h-9 text-[11px] group/btn transition-all">
+              Configure <ArrowRight className="ml-2 h-3 w-3 transition-transform group-hover/btn:translate-x-1" />
             </Button>
-          </div>
-          
-          <div className="flex justify-center md:justify-start items-center gap-4 mt-8">
-            <span className="text-[10px] font-bold tracking-tighter text-brand-primary">01</span>
-            <div className="w-20 h-0.5 bg-brand-muted relative">
-               <div className="absolute top-0 left-0 w-1/3 h-full bg-brand-accent transition-all duration-1000 group-hover/main:w-full" />
-            </div>
-            <span className="text-[10px] font-bold tracking-tighter text-brand-muted">03</span>
           </div>
         </div>
 
-        <div className="relative flex-1 h-62.5 md:h-87.5 w-full mt-8 md:mt-0 perspective-1000">
-          <div className="relative w-full h-full transition-all duration-1000 group-hover/main:rotate-y-12 group-hover/main:-translate-y-4">
+        {/* Reduced Height Image Container */}
+        <div className="relative flex-1 h-48 md:h-56  w-full mt-4 md:mt-0">
+          <div className="relative w-full h-full transition-transform duration-500 group-hover/main:scale-105">
             <Image
               src={laptopImg}
-              alt="Premium Workstation"
+              alt="Workstation"
               fill
-              className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
+              className="object-contain drop-shadow-xl"
               priority
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 40vw"
             />
           </div>
         </div>
       </div>
 
-      {/* Sidebar Promo */}
-      <div className="relative lg:col-span-1 bg-brand-primary overflow-hidden flex flex-col p-8 border border-brand-primary group/side">
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-accent/20 blur-[80px] rounded-full" />
-
-        <div className="z-10 space-y-4">
-          <div className="flex items-center gap-2 text-brand-accent">
-            <Zap size={14} fill="currentColor" />
-            <span className="text-[9px] font-black uppercase tracking-[0.3em]">Special Release</span>
+      {/* Sidebar - Compact Audio */}
+      <div className="relative rounded-xl lg:col-span-1 bg-brand-primary overflow-hidden flex flex-row lg:flex-col items-center lg:items-start p-6 border border-brand-primary group/side">
+        <div className="z-10 space-y-2 flex-1">
+          <div className="flex items-center gap-1 text-brand-accent">
+            <Zap size={12} fill="currentColor" />
+            <span className="text-[8px] font-black uppercase tracking-widest">Studio</span>
           </div>
           
-          <h2 className="text-2xl font-display font-bold text-white leading-tight">
-            Studio <br /> Acoustics.
+          <h2 className="text-xl font-display font-bold text-white leading-tight">
+            Acoustics.
           </h2>
           
-          <p className="text-brand-muted/40 text-[10px] leading-relaxed uppercase tracking-widest">
-            Reference Grade <br /> Audio Hardware
-          </p>
-          
-          <Button variant="ghost" className="h-auto p-0 hover:bg-transparent text-brand-accent flex items-center gap-2 group/link border-none">
-            <span className="uppercase tracking-[0.2em] text-[10px] font-bold">Inquire Now</span> 
-            <ArrowRight className="h-3 w-3 transition-transform group-hover/link:translate-x-1" />
+          <Button variant="link" className="h-auto p-0 text-brand-accent hover:text-white text-[9px] uppercase tracking-widest no-underline border-none group/link">
+            Explore <ArrowRight className="h-2.5 w-2.5 ml-1 transition-transform group-hover/link:translate-x-1" />
           </Button>
         </div>
 
-        <div className="relative flex-1 mt-8 min-h-[160px] lg:min-h-0 transition-all duration-700 group-hover/side:scale-110 group-hover/side:-rotate-6">
+        {/* Small Audio Image */}
+        <div className="relative w-24 h-24 lg:w-full lg:h-32 mt-0 lg:mt-4 transition-transform duration-500 group-hover/side:scale-110">
           <Image
             src={audioImg}
-            alt="Reference Headphones"
+            alt="Audio"
             fill
-            className="object-contain object-center contrast-[1.1] grayscale-[0.1]"
-            sizes="(max-width: 768px) 100vw, 25vw"
+            className="object-contain"
+            sizes="150px"
           />
         </div>
         
-        <div className="absolute bottom-4 left-8 text-white/5 font-display text-5xl font-black pointer-events-none tracking-tighter select-none">
-          2026
+        <div className="absolute -bottom-2 -right-1 text-white/5 font-display text-4xl font-black pointer-events-none select-none">
+          26
         </div>
       </div>
     </section>

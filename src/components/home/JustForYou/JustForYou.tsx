@@ -1,12 +1,11 @@
 import React from "react";
 import ProductCard from "../productCard/Product.Card";
 import { MoveRight } from "lucide-react";
-import { TECH_PRODUCTS } from "@/constant/product";
 import { Product } from "@/types/product";
 import { useGetAllProductsQuery } from "@/redux/api/productsApis";
 
 const JustForYou = () => {
-  const {data:res,isLoading} = useGetAllProductsQuery()
+  const {data:res} = useGetAllProductsQuery({})
   const products = res?.data || []
   return (
     <div className="container mx-auto px-4 py-8">

@@ -1,91 +1,95 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
 import { sliders } from "@/constant/slider";
 import { ArrowRight } from "lucide-react";
+import { useAppSelector } from "@/redux/hooks";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { useAppSelector } from "@/redux/hooks";
 
 export default function SwiperSlider() {
-    // 1. Grab the isSearching state from Redux
-const { isSearching } = useAppSelector((state) => state.search);
+  const { isSearching } = useAppSelector((state) => state.search);
   
-    // 2. If searching, hide the entire component
-if (isSearching) return null;
+  if (isSearching) return null;
+
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-4"> {/* Reduced vertical padding from py-12 to py-4 */}
       <Swiper
         slidesPerView={1}
-        spaceBetween={24}
+        spaceBetween={16}
         loop={true}
-        speed={1000} // Smoother, slower transitions
+        speed={800}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
-          pauseOnMouseEnter: true,
         }}
         pagination={{
           clickable: true,
-          dynamicBullets: true,
         }}
         breakpoints={{
           640: { slidesPerView: 2 },
-          1280: { slidesPerView: 3 },
+          1024: { slidesPerView: 3 },
+          1440: { slidesPerView: 4 }, // Added extra breakpoint to keep individual slides small
         }}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="luxury-swiper !pb-12"
+        modules={[Autoplay, Pagination]}
+        className="compact-luxury-swiper .\!pb-8"
       >
         {sliders.map((slider) => (
           <SwiperSlide key={slider.id}>
-            <div className="group relative h-[180px] md:h-[240px] w-full overflow-hidden border border-ui-border bg-ui-surface">
-              {/* Image with subtle zoom effect on hover */}
+            <div className="group relative h-35 md:h-40 w-full rounded-xl overflow-hidden  bg-ui-surface">
+              {/* Image */}
               <Image
                 src={slider.cover}
-                alt={slider.title || "Premium Electronic"}
+                alt={slider.title || "Collection"}
                 fill
-                className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
-              {/* Architectural Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Minimalist Overlay - subtle darkening for text legibility */}
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
 
-              {/* Glassmorphic Content Label */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="backdrop-blur-md bg-white/10 border border-white/20 p-4">
-                  <p className="text-[10px] uppercase tracking-[0.3em] text-brand-accent font-bold mb-1">
-                    Featured Collection
+              {/* Content - Static and minimal to save space */}
+              <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+                <div className="space-y-0.5">
+                  <p className="text-[8px] uppercase tracking-[0.2em] text-brand-accent font-bold">
+                    Series 26
                   </p>
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-white font-display text-sm md:text-base font-bold">
-                      {slider.title || "Upgrade Your Setup"}
-                    </h3>
-                    <ArrowRight className="text-white h-4 w-4" />
-                  </div>
+                  <h3 className="text-white font-display text-xs md:text-sm font-bold truncate max-w-37.5">
+                    {slider.title}
+                  </h3>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm p-1.5 border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                   <ArrowRight className="text-white h-3 w-3" />
                 </div>
               </div>
 
-              {/* Subtle Top Accent Line (Always Visible) */}
-              <div className="absolute top-0 left-0 h-[2px] w-0 bg-brand-accent transition-all duration-700 group-hover:w-full" />
+              {/* Accent Line */}
+              <div className="absolute top-0 left-0 h-[1.5px] w-0 bg-brand-accent transition-all duration-500 group-hover:w-full" />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {/* Custom Styles for Swiper Bullets to match Brand Gold */}
       <style jsx global>{`
-        .luxury-swiper .swiper-pagination-bullet-active {
-          background: var(--brand-accent) !important;
-          width: 24px !important;
-          border-radius: 2px !important;
+        .compact-luxury-swiper .swiper-pagination {
+          bottom: 0px !important;
         }
-        .luxury-swiper .swiper-pagination-bullet {
-          background: var(--brand-primary);
+        .compact-luxury-swiper .swiper-pagination-bullet {
+          width: 4px;
+          height: 4px;
+          background: #ccc;
+          opacity: 0.5;
+          transition: all 0.3s;
+        }
+        .compact-luxury-swiper .swiper-pagination-bullet-active {
+          background: var(--brand-accent) !important;
+          width: 16px;
+          border-radius: 2px;
+          opacity: 1;
         }
       `}</style>
     </div>

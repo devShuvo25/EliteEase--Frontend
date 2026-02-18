@@ -43,7 +43,7 @@ export default function LoginPage() {
        }));
        console.log("user",response)
         toast.success(`Welcome back!`);
-        router.push("/cart")
+        router.push("/")
         console.log(`Welcome back!`);
 
       }
