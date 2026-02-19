@@ -14,6 +14,7 @@ const {user} = useAuthCheck()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
+        
         <Link href={'/dashboard'} className="relative h-10 w-10  rounded-full border-2 border-transparent hover:border-slate-200 transition-all active:scale-95 p-0">
           <Avatar className="h-9 w-9 border border-slate-100">
             <AvatarImage src={user?.image} alt={user?.name || "User"} />

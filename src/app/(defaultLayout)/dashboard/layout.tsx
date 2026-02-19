@@ -10,10 +10,15 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="min-h-screen bg-white font-sans">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="container mx-auto px-4  max-w-6xl">
         
         {/* Header Section: Persistent across dashboard pages */}
-        <div className="mb-10">
+       
+
+        <div className="flex flex-col md:flex-row gap-12">
+          {/* Sidebar: Navigation component */}
+          <aside className="hidden lg:block shrink-0 w-full md:w-64">
+             <div className="pb-5">
           <h1 className="text-3xl font-bold text-[#37393F]">Your Account</h1>
           <p className="text-gray-500 text-sm mt-1">
             Alex John, Email:{" "}
@@ -22,10 +27,6 @@ export default function DashboardLayout({
             </span>
           </p>
         </div>
-
-        <div className="flex flex-col md:flex-row gap-12">
-          {/* Sidebar: Navigation component */}
-          <aside className="shrink-0 w-full md:w-64">
             <DashboardSidebar />
           </aside>
 
