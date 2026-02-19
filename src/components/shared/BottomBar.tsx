@@ -82,11 +82,11 @@ export const BottomBar = ({ categories }: MegaMenuProps) => {
                       {/* Children Items */}
                       <AccordionContent className="pb-2 bg-gray-50/50 rounded-lg mx-2">
                         <div className="flex flex-col">
-                          {cat.children?.map((sub) => (
+                          {cat?.children?.map((sub) => (
                             <SheetClose asChild key={sub.id}>
                               <Link
                                 href={`/category/${cat.id}`} // Or update to specific sub-category route
-                                onClick={() => dispatch(setCategoryId(sub.id))}
+                                onClick={() => dispatch(setCategoryId(sub?.id))}
                                 className="flex items-center gap-2 py-3 px-6 text-[13px] text-gray-600 hover:text-brand-primary hover:bg-white transition-all rounded-md mx-2"
                               >
                                 <ChevronRight className="w-3 h-3 text-gray-400" />

@@ -192,14 +192,31 @@ export const ProductReviews = ({ reviews, onCreate, onUpdate, onDelete }: Produc
 
           <div className="space-y-2">
             <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">Your Review</label>
-            <Textarea
-              ref={textareaRef}
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Write your thoughts here..."
-              className={`min-h-24 w-full bg-white border-gray-100 rounded-xl text-sm p-4 resize-none border-[1.5px] transition-all focus:ring-0 ${editingId ? 'border-brand-accent ring-1 ring-brand-accent/10' : ''}`}
-              required
-            />
+<Textarea
+  ref={textareaRef}
+  value={comment}
+  onChange={(e) => setComment(e.target.value)}
+  placeholder="Write your thoughts here..."
+ className={`
+    min-h-24 w-full p-4 text-sm transition-all duration-300 resize-none
+    bg-white rounded-xl outline-none shadow-sm
+    placeholder:text-gray-300
+    
+    /* Default Border: Thin 1px */
+    border-[1px] border-gray-100 hover:border-gray-200
+    
+    /* Focus State: Maintain 1px thickness but change color */
+    focus:border-brand-primary 
+    focus:ring-[3px] focus:ring-brand-primary/5
+    
+    /* Editing State */
+    ${editingId 
+      ? 'border-brand-accent ring-[3px] ring-brand-accent/5' 
+      : ''
+    }
+  `}
+  required
+/>
           </div>
 
           <Button

@@ -48,6 +48,7 @@ import { Product } from "@/types/product";
 import { closeAlert, showAppAlert, showConfirmDialog, showLoadingAlert } from "@/utils/alert";
 import { useAddToWishlistMutation, useGetWishlistQuery } from "@/redux/api/wishListApis";
 import { useAuthCheck } from "@/hook/useAuthCheck";
+import { blog } from "@/constant/Blog";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -200,7 +201,6 @@ const totalPrice = currentUnitPrice * quantity;
           rating : rating,
           comment : comment
         }
-        // console.log(data)
         await createReview(data).unwrap();
         toast.success("Review submitted!");
       }
@@ -226,9 +226,8 @@ const totalPrice = currentUnitPrice * quantity;
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-[#f2f4f8] min-h-screen pt-24 pb-12 font-sans">
+    <div className="bg-[#f2f4f8] min-h-screen  pb-12 font-sans">
       <div className="container mx-auto px-4 max-w-7xl">
-        <Breadcrumbs brand={product.brand || ''} />
 
         <div className="bg-white rounded shadow-sm p-6 mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -300,7 +299,7 @@ const totalPrice = currentUnitPrice * quantity;
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-3 space-y-8">
             <Specsification specifications={product.specifications ?? []} />
-            <ProductBlogCard blogPost={product.blogPost ?? null} />
+            <ProductBlogCard blogPost={blog ?? null} />
             <ProductQA 
                 questions={questions} 
                 onUpdate={handleUpsertQuestion}
@@ -351,11 +350,7 @@ const ActionIcon = ({ icon, hoverClass, onClick }: { icon: React.ReactNode; hove
   </Button>
 );
 
-const Breadcrumbs = ({ brand }: { brand?: string }) => (
-  <nav className="flex items-center mt-9 gap-2 text-[10px] uppercase tracking-wider text-slate-500 mb-4 bg-white px-4 py-3 rounded shadow-sm border border-slate-100">
-    <span>Home</span> / <span>Component</span> / <span className="text-slate-800 font-bold">{brand}</span>
-  </nav>
-);
+
 
 const SocialShare = () => (
   <div className="flex items-center justify-center gap-5 mt-8 text-slate-400 border-t pt-6">

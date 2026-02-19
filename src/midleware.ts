@@ -33,7 +33,6 @@ export async function middleware(request: NextRequest) {
 
   // --- STEP 2: HANDLE UNAUTHENTICATED USERS ---
   if (!token) {
-    console.log("hello")
     if (protectedRoute) {
       loginUrl.searchParams.set("callback", pathname);
       return NextResponse.redirect(loginUrl);

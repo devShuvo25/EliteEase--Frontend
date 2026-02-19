@@ -11,18 +11,21 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useGetAllCartItemsQuery } from "@/redux/api/cartApi";
 import { useClearWishlistMutation, useGetWishlistQuery, useRemoveFromWishlistMutation } from "@/redux/api/wishListApis";
-import WishlistPageModal from "../modal/wishLists.modal";
 import { UserNav } from "../dropdown/user.dropdown";
 import { useDispatch } from "react-redux";
 import { setIsSearching, setSearchTerm } from "@/redux/features/searchSlice";
 import { cn } from "@/lib/utils";
 import { MobileNavDrawer } from "../drawer/MobileDrawer";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const { data: res } = useGetAllCategoryQuery();
   const categories: ApiCategory[] = res?.data ?? [];
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // cheak role for bottom bar
+  const pathname = usePathname()
+
 
   const { data: cartRes } = useGetAllCartItemsQuery(undefined);
   const { data: wishListRes } = useGetWishlistQuery(undefined);
@@ -142,16 +145,15 @@ export default function Navbar() {
 
         {/* Desktop Navigation (Bottom Bar) */}
 {/* 5. Navigation Bar (Visible on both Mobile and Desktop) */}
-        <nav className="border-t border-gray-50 mt-2">
-          <BottomBar categories={categories} />
-        </nav>
+{/* Only show BottomBar if NOT in the dashboard */}
+        {!pathname.startsWith("/dashboard") && (
+          <nav className="border-t border-gray-50 mt-2">
+            <BottomBar categories={categories} />
+          </nav>
+        )}
       </header>
 
       {/* Dynamic Spacer */}
-      <div className={cn(
-        "transition-all",
-        scrolled ? "h-24 md:h-32" : "h-28 md:h-36"
-      )} />
     </>
   );
 }

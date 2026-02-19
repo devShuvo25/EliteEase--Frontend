@@ -84,14 +84,31 @@ export const ProductQA = ({
           </div>
           
           <div className="flex flex-col gap-3">
-            <Textarea 
-              ref={textareaRef}
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="Type your question here..."
-              className={`min-h-24 w-full bg-white border-gray-100 rounded-xl text-sm p-4 placeholder:text-gray-300 shadow-sm transition-all duration-200 focus:ring-0 resize-none border-[1.5px] ${editingId ? 'border-brand-accent ring-1 ring-brand-accent/10' : ''}`}
-              required
-            />
+<Textarea 
+  ref={textareaRef}
+  value={question}
+  onChange={(e) => setQuestion(e.target.value)}
+  placeholder="Type your question here..."
+  className={`
+    min-h-24 w-full p-4 text-sm transition-all duration-300 resize-none
+    bg-white rounded-xl outline-none shadow-sm
+    placeholder:text-gray-300
+    
+    /* Default Border: Thin 1px */
+    border-[1px] border-gray-100 hover:border-gray-200
+    
+    /* Focus State: Maintain 1px thickness but change color */
+    focus:border-brand-primary 
+    focus:ring-[3px] focus:ring-brand-primary/5
+    
+    /* Editing State */
+    ${editingId 
+      ? 'border-brand-accent ring-[3px] ring-brand-accent/5' 
+      : ''
+    }
+  `}
+  required
+/>
             <div className="flex justify-end">
               <Button
                 type="submit"
