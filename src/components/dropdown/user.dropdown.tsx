@@ -7,10 +7,12 @@ import Link from "next/link";
 import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useAuthCheck } from "@/hook/useAuthCheck";
 import { User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function UserNav() {
 const {user} = useAuthCheck()
-
+const router = useRouter()
+// if(!user) return router.push('/login')
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

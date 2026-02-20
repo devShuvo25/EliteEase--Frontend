@@ -1,6 +1,7 @@
 "use client";
 
 import { DashboardSidebar } from "@/components/dashoboard/Sidebar";
+import { useAuthCheck } from "@/hook/useAuthCheck";
 import React from "react";
 
 export default function DashboardLayout({
@@ -8,6 +9,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const {user} = useAuthCheck()
   return (
     <div className="min-h-screen bg-white font-sans">
       <div className="container mx-auto px-4  max-w-6xl">
@@ -21,9 +23,9 @@ export default function DashboardLayout({
              <div className="pb-5">
           <h1 className="text-3xl font-bold text-[#37393F]">Your Account</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Alex John, Email:{" "}
+            {user?.username}, Email:{""}
             <span className="text-gray-900 font-medium italic">
-              alexjohn@gmail.com
+              {user?.email}
             </span>
           </p>
         </div>
