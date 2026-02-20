@@ -1,0 +1,22 @@
+export const BRANDS = [
+  { name: "Apple", value: "apple" },
+  { name: "Samsung", value: "samsung" },
+  { name: "Sony", value: "sony" },
+  { name: "Asus", value: "asus" },
+  { name: "MSI", value: "msi" },
+  { name: "HP", value: "hp" },
+  { name: "Dell", value: "dell" },
+  { name: "Lenovo", value: "lenovo" },
+  { name: "Logitech", value: "logitech" },
+  { name: "Razer", value: "razer" },
+  { name: "NVIDIA", value: "nvidia" },
+  { name: "AMD", value: "amd" },
+  { name: "Intel", value: "intel" },
+  { name: "TP-Link", value: "tp-link" },
+  { name: "Gigabyte", value: "gigabyte" },
+  { name: "Western Digital", value: "western-digital" },
+  { name: "Kingston", value: "kingston" },
+  { name: "Corsair", value: "corsair" },
+  { name: "Acer", value: "acer" },
+  { name: "Anker", value: "anker" }
+];

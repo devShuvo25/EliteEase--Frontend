@@ -11,6 +11,7 @@ import { LogOut, MessageSquare } from "lucide-react";
 import Cookies from "js-cookie";
 import { useAppDispatch } from "@/redux/hooks";
 import { setCredentials } from "@/redux/features/authSlice";
+import { toast } from "sonner";
 
 export function DashboardSidebar() {
   const { navLinks } = useNavLinks();
@@ -23,6 +24,7 @@ export function DashboardSidebar() {
     if (user) {
       Cookies.remove("token");
       dispatch(setCredentials({ token: null }));
+      toast.success('Successfully Logged out')
       router.push("/");
     }
   }

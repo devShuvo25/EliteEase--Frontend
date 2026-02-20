@@ -17,6 +17,7 @@ import { setIsSearching, setSearchTerm } from "@/redux/features/searchSlice";
 import { cn } from "@/lib/utils";
 import { MobileNavDrawer } from "../drawer/MobileDrawer";
 import { usePathname } from "next/navigation";
+import { useAuthCheck } from "@/hook/useAuthCheck";
 
 export default function Navbar() {
   const { data: res } = useGetAllCategoryQuery();
@@ -25,6 +26,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   // cheak role for bottom bar
   const pathname = usePathname()
+  const {user} = useAuthCheck()
 
 
   const { data: cartRes } = useGetAllCartItemsQuery(undefined);
@@ -34,8 +36,7 @@ export default function Navbar() {
   const wishListCount = wishlist?.products?.length || 0;
 
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-  const [removeFromWishlist, { isLoading: isRemoving }] = useRemoveFromWishlistMutation();
-  const [clearWishlist, { isLoading: isClearing }] = useClearWishlistMutation();
+
 
   const dispatch = useDispatch();
 
@@ -58,17 +59,6 @@ export default function Navbar() {
           scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-3" : "bg-white py-4 shadow-sm"
         )}
       >
-        {/* <WishlistPageModal
-          isOpen={isWishlistOpen}
-          setIsOpen={setIsWishlistOpen}
-          onClose={() => setIsWishlistOpen(false)}
-          products={wishListRes?.data?.products || []}
-          onRemove={(id) => removeFromWishlist(id)}
-          onClear={() => clearWishlist({})}
-          isRemoving={isRemoving}
-          isClearing={isClearing}
-        /> */}
-
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between gap-4">
             
@@ -120,7 +110,13 @@ export default function Navbar() {
               </div>
           <div className="hidden md:flex items-center gap-4">
               <div className="h-8 w-px bg-gray-200" />
-              <UserNav />
+            {!user?               <Link 
+                href={`/login?callback=${encodeURIComponent(pathname)}`}
+                className=" inline-flex items-center justify-center px-6 py-2 bg-brand-primary text-white rounded-md transition-hover"
+              >
+                Join Now
+              </Link> :
+              <UserNav />}
             </div>
           </div>
                        

@@ -7,7 +7,7 @@ import * as z from "zod";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useLoginMutation } from "@/redux/api/authApi";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -28,6 +28,8 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const searchParams =  useSearchParams()
+  const callback = searchParams.get("callback") || "/dashboard";
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -43,7 +45,7 @@ export default function LoginPage() {
        }));
        console.log("user",response)
         toast.success(`Welcome back!`);
-        router.push("/")
+        router.push(callback || '/')
         console.log(`Welcome back!`);
 
       }

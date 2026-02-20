@@ -56,6 +56,8 @@ const ProductDetailsPage = () => {
   const router = useRouter();
   const { checkAccess } = useAuthCheck();
 
+  // user cheak
+  const {user} = useAuthCheck()
   // --- API Hooks ---
   const { data: productRes, isLoading } = useGetProductByIdQuery({ id: productId! }, { skip: !productId });
   const { data: reviewsRes } = useGetReviewsByProductIdQuery({ id: productId! }, { skip: !productId });
@@ -100,6 +102,12 @@ const totalPrice = currentUnitPrice * quantity;
   };
 
   const handleAddToCartAction = async () => {
+    if(!user){
+      toast.info("Please login to add items to cart");
+      const callbackPath = window.location.pathname;
+      router.push(`/login?callback=${encodeURIComponent(callbackPath)}`);
+      return;
+    }
     if (!checkAccess(['CUSTOMER', 'SUPER_ADMIN', 'STAFF', 'ADMIN'])) return;
     if (!productId) return toast.error("Product not found");
     if (stock < 1) return showAppAlert("Sorry, Stock out", "Try another product", "warning");

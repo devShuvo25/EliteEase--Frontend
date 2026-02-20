@@ -28,13 +28,11 @@ const Products = () => {
   const handleBrandChange = (newBrand: string | undefined) => {
     setBrand(newBrand);
     setPage(1);
-    alert(brand)
   };
 
   const handlePriceChange = (newPrice: string | undefined) => {
     setPrice(newPrice);
     setPage(1);
-    alert(price)
 
   };
 
@@ -61,6 +59,7 @@ const Products = () => {
   });
 
   const products = res?.data || [];
+  console.log(products)
   const meta = res?.meta || { total: 0, totalPage: 1 };
   const totalPages = meta.totalPage || Math.ceil(meta.total / limit) || 1;
 
@@ -85,6 +84,7 @@ const Products = () => {
     <div id="products" className="container mx-auto px-4 py-12">
       {/* Header Section: Note we pass the handler functions, not the direct setters */}
       <ProductsHeader
+        products={products}
         setBrand={handleBrandChange}
         setPrice={handlePriceChange}
         itemCount={meta.total || products.length}

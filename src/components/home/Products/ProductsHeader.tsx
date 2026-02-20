@@ -1,6 +1,9 @@
+import { BRANDS } from '@/constant/brandsData';
+import { Product } from '@/types/product';
 import { ChevronDown, Filter } from 'lucide-react';
 
 interface ProductsHeaderProps {
+  products : Product[]
   itemCount: number;
   setBrand: (value: string | undefined) => void;
   setPrice: (value: string | undefined) => void;
@@ -8,10 +11,12 @@ interface ProductsHeaderProps {
 }
 
 export const ProductsHeader = ({ 
-  itemCount = 0, 
+  itemCount = 0,
+  products, 
   setBrand,
   setPrice 
 }: ProductsHeaderProps) => {
+  
   return (
     // Reduced mb-12 -> mb-6 and pb-8 -> pb-3
     <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4 border-b border-gray-100 pb-3">
@@ -39,10 +44,8 @@ export const ProductsHeader = ({
             className="w-full appearance-none bg-gray-50 border border-gray-200 px-3 py-1.5 pr-8 text-[10px] font-bold uppercase tracking-tight text-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-accent transition-all cursor-pointer rounded-md"
           >
             <option value="">All Brands</option>
-            <option value="apple">Apple</option>
-            <option value="samsung">Samsung</option>
-            <option value="sony">Sony</option>
-            <option value="dell">Dell</option>
+            
+           {BRANDS?.map((b,i) => <option key={i} value={b.value}>{b.name}</option> )}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
             <ChevronDown size={12} className="text-gray-400" />
